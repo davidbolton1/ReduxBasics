@@ -38,7 +38,17 @@
 //     id: 0    
 // }
 
+{
+    amounts: [0, 0, 0, 0, 0]
+}
 
+{
+    amounts: [0, 0, 0, 0, 0, 0]
+}
+
+{
+    type: 'ADD_COUNTER'
+}
 
 import { 
     createStore
@@ -48,19 +58,31 @@ import {
 // They always receive the current state and the action
 // they're processing.
 const defaultState = { amounts: [0, 0, 0, 0, 0] };
+const INCREMENT= 'INCREMENT';
+const DECREMENT= 'DECREMENT';
+const ADD_COUNTER = 'ADD_COUNTER';
 
 function counter(state=defaultState, action) {
     console.log('Somebody called counter()');
     const newState = { ...state };
 
-    if (action.type === 'INCREMENT') {
-        newState.amounts[action.id] = state.amounts[action.id] + 1;
-    } else if (action.type === 'DECREMENT') {
-        newState.amounts[action.id] = state.amounts[action.id] - 1;
-    } else {
+    switch(action.type) {
+
+        case INCREMENT:
+            newState.amounts[action.id] = state.amounts[action.id] + 1;
+            break;
+        case DECREMENT:
+            newState.amounts[action.id] = state.amounts[action.id] - 1;
+            break;
+        case ADD_COUNTER:
+            newState.amounts.push(0);
+            break;
+        default:
+            break;
+    }
       // ... no need to do anything.
       // we already made a copy of state to return.
-    }
+    
     // They *must* return the new version of state.
     return newState;
 }
@@ -68,6 +90,7 @@ function counter(state=defaultState, action) {
 // You give it a reducer, it gives you a "store".
 // The store is an object that manages your state 
 // using your reducer.
+
 const store = createStore(counter, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 // "Push notifications" - subscribe to changes in the store
 store.subscribe(() => {
@@ -79,17 +102,25 @@ store.subscribe(() => {
 
 function actionIncrement(id) {
     return {
-        type: 'INCREMENT',
+        type: INCREMENT,
         id
     }
 }
 
 function actionDecrement(id) {
     return {
-        type: 'DECREMENT',
+        type: DECREMENT,
         id
     }
 }
+
+function actionAddCounter() {
+    return {
+        type: ADD_COUNTER
+    }
+}
+
+store.dispatch(actionAddCounter())
 
 // Let's give the store some actions to process.
 store.dispatch(actionIncrement(0));
