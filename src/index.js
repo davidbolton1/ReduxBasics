@@ -19,14 +19,25 @@
     type: 'DECREMENT'
 }
 
+{
+    type: 'Emoji'
+}
+
 // "the teller" - reducer function
 // Reducers are always named for the state they manage
 // They always receive the current state and the aciton they're processing
 function counter(state, action) {
     const newState = { ...state};
+    if (action.type === 'INCREMENT') {
     newState.amount = state.amount + 1;
+    } else if (action.type === 'DECREMENT') {
+        newState.amount = state.amount - 1;
+    } else { 
+        // no need to do anything
+        // We already made a copy of state to return
+    }
     // Must return the new version of the state
-    return newState
+    return newState;
 }
 
 // "push notificaitons" - subscribe to changes in the store
