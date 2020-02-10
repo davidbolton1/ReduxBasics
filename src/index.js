@@ -30,18 +30,43 @@ import {
 // "the teller" - reducer function
 // Reducers are always named for the state they manage
 // They always receive the current state and the aciton they're processing
-function counter(state={amount:100}, action) {
+const INCREMENT = 'INCREMENT' //You can define it here to get rid of typos
+const defaultState = {amount:100};
+
+// You can write action creator functions to format action objects (to avoid types)
+function actionIncrement(howMuch=1) {
+    return {
+        type: INCREMENT,
+        amount: howMuch
+    }
+}
+
+function counter(state=defaultState, action) {
     const newState = { ...state};
+
+    switch(action.type) {
+        case INCREMENT:
+            newState.amount = state.amount + action.amount;
+            break;
+        case 'DECREMENT':
+            newState.amount = state.amount - action.amount;
+            break;
+        default:
+            break;
+    }
+    /*
     if (action.type === 'INCREMENT') {
-    newState.amount = state.amount + 1;
+    newState.amount = state.amount + action.amount;
     } else if (action.type === 'DECREMENT') {
-        newState.amount = state.amount - 5;
+        newState.amount = state.amount - action.amount;
     } else { 
         // no need to do anything
         // We already made a copy of state to return
     }
     // Must return the new version of the state
+    */
     return newState;
+    
 }
 
 // You give it a reducter, it gives you a 'store'
@@ -56,14 +81,20 @@ store.subscribe(() => {
 
 // Let's give the store some actions to process.
 
-store.dispatch({
-    type: 'INCREMENT',
+store.dispatch(
+    /*
+    {
+    type: INCREMENT,
     amount: 5
-});
+    }
+    */
+   actionIncrement(10)
+);
 
 
 store.dispatch({
-    type: 'DECREMENT'
+    type: 'DECREMENT',
+    amount: 2
 });
 
 
