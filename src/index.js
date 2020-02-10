@@ -38,6 +38,7 @@
 //     id: 0    
 // }
 
+/*
 {
     amounts: [0, 0, 0, 0, 0]
 }
@@ -49,7 +50,7 @@
 {
     type: 'ADD_COUNTER'
 }
-
+*/
 import { 
     createStore
 } from 'redux';
@@ -61,6 +62,7 @@ const defaultState = { amounts: [0, 0, 0, 0, 0] };
 const INCREMENT= 'INCREMENT';
 const DECREMENT= 'DECREMENT';
 const ADD_COUNTER = 'ADD_COUNTER';
+const DEL_COUNTER = 'DEL_COUNTER';
 
 function counter(state=defaultState, action) {
     console.log('Somebody called counter()');
@@ -76,6 +78,9 @@ function counter(state=defaultState, action) {
             break;
         case ADD_COUNTER:
             newState.amounts.push(0);
+            break;
+        case DEL_COUNTER:
+            newState.amounts.splice(action.id, 1);
             break;
         default:
             break;
@@ -120,7 +125,21 @@ function actionAddCounter() {
     }
 }
 
+function actionDelCounter(id) {
+    return {
+        type: DEL_COUNTER,
+        id
+    }
+}
+
+
 store.dispatch(actionAddCounter())
+store.dispatch(actionDelCounter(3))
+store.dispatch(actionAddCounter())
+store.dispatch(actionAddCounter())
+store.dispatch(actionAddCounter())
+store.dispatch(actionAddCounter())
+
 
 // Let's give the store some actions to process.
 store.dispatch(actionIncrement(0));
